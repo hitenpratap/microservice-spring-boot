@@ -1,0 +1,57 @@
+version: '2.1'
+services:
+  rabbitmq:
+    image: rabbitmq:latest
+    restart: always
+    ports:
+      - 15672:15672
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+  
+  config:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: hitenpratap99/portal-config
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  registry:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: hitenpratap99/portal-registry
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    ports:
+      - 8761:8761
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  auth-service:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: hitenpratap99/portal-auth-service
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  auth-mongodb:
+    image: hitenpratap99/portal-mongodb
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"

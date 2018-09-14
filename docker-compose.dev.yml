@@ -1,0 +1,23 @@
+version: '2.1'
+services:
+  rabbitmq:
+    ports:
+      - 5672:5672
+
+  config:
+    build: config
+    ports:
+      - 8888:8888
+
+  registry:
+    build: registry
+
+  auth-service:
+    build: auth-service
+    ports:
+      - 5000:5000
+
+  auth-mongodb:
+    build: mongodb
+    ports:
+      - 25000:27017
