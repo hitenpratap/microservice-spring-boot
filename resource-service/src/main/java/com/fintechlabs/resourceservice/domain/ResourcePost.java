@@ -1,5 +1,7 @@
 package com.fintechlabs.resourceservice.domain;
 
+import com.fintechlabs.resourceservice.util.BeanUtil;
+import com.fintechlabs.resourceservice.util.HelperMethod;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,7 +20,7 @@ public class ResourcePost {
     private Date dateCreated;
     @LastModifiedDate
     private Date lastUpdated;
-    private String uniqueId;
+    private String uniqueId = BeanUtil.getBean(HelperMethod.class).fetchRandomUniqueStr();
     @Indexed(direction = IndexDirection.DESCENDING, dropDups = false)
     private String resourceURL;
     private String title;

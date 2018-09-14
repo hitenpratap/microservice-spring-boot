@@ -1,6 +1,6 @@
-package com.fintechlabs.resourceservice.util.database;
+package com.fintechlabs.authserver.util.database;
 
-import com.fintechlabs.resourceservice.util.HelperMethod;
+import com.fintechlabs.authserver.util.HelperMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,9 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 
 @Component
-public class MongoEventListenerImpl extends AbstractMongoEventListener<Object> {
+public class MongoEventListenerImpl extends AbstractMongoEventListener<Object>{
 
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
+    private final Logger LOG = LoggerFactory.getLogger(MongoEventListenerImpl.class);
 
     @Autowired
     private MongoOperations mongoOperations;

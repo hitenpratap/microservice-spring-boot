@@ -2,6 +2,7 @@ package com.fintechlabs.authserver.domain;
 
 import com.fintechlabs.authserver.repository.UserRoleRepository;
 import com.fintechlabs.authserver.util.BeanUtil;
+import com.fintechlabs.authserver.util.HelperMethod;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,7 +23,7 @@ public abstract class User {
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String emailAddress;
     private String password;
-    private String uniqueId;
+    private String uniqueId = BeanUtil.getBean(HelperMethod.class).fetchRandomUniqueStr();
     @CreatedDate
     private Date dateCreated;
     @LastModifiedDate
