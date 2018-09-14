@@ -1,4 +1,4 @@
-package com.fintechlabs.employeeservice.service.security;
+package com.fintechlabs.resourceservice.service.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 
 import java.util.*;
 
-public class CustomUserInfoTokenServices implements ResourceServerTokenServices {
+public class CustomUserInfoTokenServices implements ResourceServerTokenServices{
 
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -56,8 +56,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken)
             throws AuthenticationException, InvalidTokenException {
-        System.out.println("*********************       Access Token        ====>>>>>       " + accessToken);
-        System.out.println("*********************       Info URL        ====>>>>>       " + this.userInfoEndpointUrl);
         Map<String, Object> map = getMap(this.userInfoEndpointUrl, accessToken);
         if (map.containsKey("error")) {
             this.logger.debug("userinfo returned error: " + map.get("error"));
@@ -91,7 +89,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
         Map<String, Object> request = (Map<String, Object>) map.get("oauth2Request");
 
         String clientId = (String) request.get("clientId");
-        System.out.println("*********************       Client Id        ====>>>>>       " + clientId);
         Set<String> scope = new LinkedHashSet<>(request.containsKey("scope") ?
                 (Collection<String>) request.get("scope") : Collections.<String>emptySet());
 
@@ -106,19 +103,15 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
     @SuppressWarnings({"unchecked"})
     private Map<String, Object> getMap(String path, String accessToken) {
-        System.out.println("*********************       Inside Map       ====>>>>>       ");
         this.logger.debug("Getting user info from: " + path);
         try {
             OAuth2RestOperations restTemplate = this.restTemplate;
-            System.out.println("*********************       Inside Map   #1    ====>>>>>       ");
             if (restTemplate == null) {
                 BaseOAuth2ProtectedResourceDetails resource = new BaseOAuth2ProtectedResourceDetails();
                 resource.setClientId(this.clientId);
                 restTemplate = new OAuth2RestTemplate(resource);
             }
-            System.out.println("*********************       Inside Map   #2    ====>>>>>       ");
             OAuth2AccessToken existingToken = restTemplate.getOAuth2ClientContext().getAccessToken();
-            System.out.println("*********************       Inside Map   #3    ====>>>>>       " + this.tokenType);
             if (existingToken == null || !accessToken.equals(existingToken.getValue())) {
                 DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken(accessToken);
                 token.setTokenType(this.tokenType);

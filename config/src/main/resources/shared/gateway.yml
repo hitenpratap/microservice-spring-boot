@@ -26,6 +26,11 @@ zuul:
           url: http://127.0.0.1:5000
           stripPrefix: false
           sensitiveHeaders:
+      resource-service:
+          path: /resources/**
+          url: http://127.0.0.1:7000
+          stripPrefix: false
+          sensitiveHeaders:
 
 
 server:
