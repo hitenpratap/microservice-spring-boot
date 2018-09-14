@@ -15,6 +15,17 @@ zuul:
   host:
     connect-timeout-millis: 20000
     socket-timeout-millis: 20000
+  routes:
+      employee-service:
+          path: /employees/**
+          url: http://127.0.0.1:8000
+          stripPrefix: false
+          sensitiveHeaders:
+      auth-service:
+          path: /uaa/**
+          url: http://127.0.0.1:5000
+          stripPrefix: false
+          sensitiveHeaders:
 
 
 server:
